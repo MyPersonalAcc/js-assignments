@@ -483,7 +483,20 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    throw new Error('Not implemented');
+    var dirs = Array(pathes.length);
+    for (var i = 0; i < pathes.length; i++) {
+        dirs[i] = pathes[i].split('/');
+    }
+    var commonDir = '';
+    for (var i = 0; i < dirs[0].length; i++) {
+        for (var j = 1; j < dirs.length; j++) {
+            if (dirs[0][i] != dirs[j][i]) {
+                return commonDir;
+            }
+        }
+        commonDir = commonDir.concat(dirs[0][i], '/');
+    }
+    return commonDir;
 }
 
 
@@ -506,7 +519,19 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-    throw new Error('Not implemented');
+    var rowsM1 = m1.length, colsM1 = m1[0].length, rowsM2 = m2.length, colsM2 = m2[0].length, rez = [];
+    if (colsM1 != rowsM2) 
+        return false;
+    for (var i = 0; i < rowsM1; i++)
+        rez[i] = [];
+    for (var k = 0; k < colsM2; k++) {
+        for (var i = 0; i < rowsM1; i++) {
+            var tempEl = 0;
+            for (var j = 0; j < rowsM2; j++) tempEl += m1[i][j] * m2[j][k];
+            rez[i][k] = tempEl;
+        }
+    }
+    return rez;
 }
 
 
@@ -541,7 +566,20 @@ function getMatrixProduct(m1, m2) {
  *
  */
 function evaluateTicTacToePosition(position) {
-    throw new Error('Not implemented');
+    var rez = undefined;
+    if ((position[0][0] == position[1][1]) && (position[1][1] == position[2][2]) && (position[0][0] != undefined))
+        return position[0][0];
+    else if ((position[2][0] == position[1][1]) && (position[1][1] == position[0][2]) && (position[2][0] != undefined))
+        return position[2][0];
+    else {
+        for (var i = 0; i < position.length; i++) {
+            if ((position[i][0] == position[i][1]) && (position[i][1] == position[i][2]) && (position[i][0] != undefined))
+                return position[i][2];
+            if ((position[0][i] == position[1][i]) && (position[1][i] == position[2][i]) && (position[0][i] != undefined))
+                return position[2][i];
+        }
+    }
+    return rez;
 }
 
 

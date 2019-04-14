@@ -148,7 +148,14 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-    throw new Error('Not implemented');
+    return function () {
+        let argsStr = JSON.stringify(Array.from(arguments)).slice(1, -1);
+        logFunc(func.name + '(' + argsStr + ') starts');
+        let result = func.apply(null, arguments);
+        argsStr = JSON.stringify(Array.from(arguments)).slice(1, -1);
+        logFunc(func.name + '(' + argsStr + ') ends');
+        return result;
+    }
 }
 
 
@@ -166,7 +173,10 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
 function partialUsingArguments(fn) {
-    throw new Error('Not implemented');
+    let argv = Array.from(arguments).slice(1);
+    return function () {
+        return fn.apply(null, argv.concat(Array.from(arguments)));
+    }
 }
 
 
