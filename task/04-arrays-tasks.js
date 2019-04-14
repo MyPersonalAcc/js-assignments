@@ -464,7 +464,8 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]   
  */
 function getIdentityMatrix(n) {
-   throw new Error('Not implemented');
+   return Array.from({length: n}, (x, i) => 
+   Array.from({length: n}, (y, j) => i === j ? 1 : 0));
 }
 
 /**
@@ -481,7 +482,7 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-   throw new Error('Not implemented');
+   return new Array(end - start + 1).fill(0).map((item, i) => start + i);
 }
 
 /**
@@ -532,7 +533,13 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-   throw new Error('Not implemented');
+   const map = new Map(); 
+   array.map((item) => {
+       const key = keySelector(item);
+       const value = valueSelector(item);
+       map.has(key) ? map.get(key).push(value) : map.set(key, [value]);
+   })
+   return map;
 }
 
 
@@ -548,7 +555,7 @@ function group(array, keySelector, valueSelector) {
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-    throw new Error('Not implemented');
+   return [].concat(...arr.map(item => childrenSelector(item)));
 }
 
 
@@ -565,7 +572,10 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-    throw new Error('Not implemented');
+   if(indexes.length===1){
+      return arr[indexes[0]]
+  }
+  return getElementByIndexes(arr[indexes[0]], indexes.slice(1));
 }
 
 
@@ -588,7 +598,17 @@ function getElementByIndexes(arr, indexes) {
  * 
  */
 function swapHeadAndTail(arr) {
-    throw new Error('Not implemented');
+    let middle = Math.floor(arr.length / 2);
+    let head = arr.splice(0, middle);
+    let tail = arr.splice(arr.length-middle, middle);
+    let array = [];
+    array.push(...tail);
+    if(arr.length % 2) {
+        let middle = arr.splice(0, 1);
+        array.push(...middle)
+    }
+    array.push(...head);
+    return array;
 }
 
 

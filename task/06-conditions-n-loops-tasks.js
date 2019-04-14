@@ -197,7 +197,7 @@ function findFirstSingleChar(str) {
  * @param {bool} isStartIncluded
  * @param {bool} isEndIncluded
  * @return {string}
- *
+ * 
  * @example
  *   0, 1, true, true   => '[0, 1]'
  *   0, 1, true, false  => '[0, 1)'
@@ -208,7 +208,38 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    throw new Error('Not implemented');
+    if (isStartIncluded && isEndIncluded) {
+        if (a <= b) {
+            return ('[' + a + ', ' + b + ']');
+        }
+        else {
+            return ('[' + b + ', ' + a + ']');
+        }
+    }
+    else if (isStartIncluded && !isEndIncluded) {
+        if (a <= b) {
+            return ('[' + a + ', ' + b + ')');
+        }
+        else {
+            return ('[' + b + ', ' + a + ')');
+        }
+    }
+    else if (!isStartIncluded && isEndIncluded) {
+        if (a <= b) {
+            return ('(' + a + ', ' + b + ']');
+        }
+        else {
+            return ('(' + b + ', ' + a + ']');
+        }
+    }
+    else if (!isStartIncluded && !isEndIncluded) {
+        if (a <= b) {
+            return ('(' + a + ', ' + b + ')');
+        }
+        else {
+            return ('(' + b + ', ' + a + ')');
+        }
+    }
 }
 
 
@@ -225,7 +256,7 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-    throw new Error('Not implemented');
+    return [...str].reverse().join('');
 }
 
 
@@ -242,7 +273,7 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    throw new Error('Not implemented');
+    return parseFloat(num.toString().split('').reverse().join(''));
 }
 
 
@@ -267,7 +298,10 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+    return ccn.toString().split('').reverse().map( (x) => parseInt(x) )
+    .map( (x,idx) => idx % 2 ? x * 2 : x )
+    .map( (x) => x > 9 ? (x % 10) + 1 : x )
+    .reduce( (accum, x) => accum += x ) % 10 === 0;
 }
 
 
@@ -286,7 +320,15 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    throw new Error('Not implemented');
+    while (num > 9) {
+        var sum = 0;
+        var str = String(num);
+        for (var i = 0; i < str.length; i++) {
+            sum += Number(str[i]);
+        }
+        num = sum;
+    }
+    return Number(num);
 }
 
 
@@ -312,7 +354,28 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true 
  */
 function isBracketsBalanced(str) {
-    throw new Error('Not implemented');
+    let stack = Array();
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] == '{') {
+            stack.push('}');
+        }
+        else if (str[i] == '[') {
+            stack.push(']');
+        }
+        else if (str[i] == '(') {
+            stack.push(')');
+        }
+        else if (str[i] == '<') {
+            stack.push('>');
+        }
+        else {
+            if ((stack.length == 0) || (str[i] != stack[stack.length - 1])) {
+                return false;
+            }
+            stack.pop();
+        }
+    }
+    return (stack.length == 0);
 }
 
 
@@ -348,7 +411,31 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    throw new Error('Not implemented');
+    var interval = endDate - startDate;
+    var seconds = (interval / 1000), minutes = (interval / 60000), hours = (interval / 3600000), days = (interval / 86400000);
+    if (seconds <= 45) {
+        return 'a few seconds ago';
+    } else if (seconds <= 90) {
+        return 'a minute ago';
+    } else if (minutes <= 45) {
+        return new String((seconds % 60 == 30) ? Math.floor(minutes) : Math.round(minutes)).concat(' minutes ago');
+    } else if (minutes <= 90) {
+        return 'an hour ago';
+    } else if (hours <= 22) {
+        return new String((minutes % 60 == 30) ? Math.floor(hours) : Math.round(hours)).concat(' hours ago');
+    } else if (hours <= 36) {
+        return 'a day ago';
+    } else if (days <= 25) {
+        return new String((hours % 24 == 12) ? Math.floor(days) : Math.round(days)).concat(' days ago');
+    } else if (days <= 45) {
+        return 'a month ago';
+    } else if (days <= 345) {
+        return new String(Math.round(days / 30)).concat(' months ago');
+    } else if (days <= 545) {
+        return 'a year ago';
+    } else {
+        return new String(Math.round(days / 360)).concat(' years ago');
+    }
 }
 
 
@@ -372,7 +459,14 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    throw new Error('Not implemented');
+    let result = "";
+    while (num >= n) {
+        result += String(num % n);
+        num = (num / n | 0);
+    }
+    result += String(num % n);
+    result = reverseString(result);
+    return result;
 }
 
 
